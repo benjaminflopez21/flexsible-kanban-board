@@ -1,0 +1,50 @@
+export default {
+    wrapper: {
+        width: '272px',
+        height: '100%',
+        display: 'inline-block',
+        verticalAlign: 'top',
+        whiteSpace: 'nowrap',
+        margin: '0 4px',
+    },
+    content: {
+        backgroundColor: '#ebecf0',
+        borderRadius: '3px',
+        boxSizing: 'border-box',
+        display: 'flex',
+        flexDirection: 'column',
+        maxHeight: '100%',
+        position: 'relative',
+        whiteSpace: 'normal',
+    },
+    header: {
+        flex: '0 0 auto',
+        padding: '10px 8px',
+        position: 'relative',
+        minHeight: '20px',
+    },
+    headerText: {
+        overflow: 'hidden',
+        overflowWrap: 'break-word',
+        padding: '4px 8px',
+        margin: 0,
+        fontSize: 16,
+        color: '#172b4d',
+    },
+    main: {
+        flex: '1 1 auto',
+        marginBottom: 0,
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        margin: '0 4px',
+        padding: '0 4px',
+        zIndex: 1,
+        minHeight: 0,
+    },
+    footer: {
+        minHeight: '38px',
+        maxHeight: '38px',
+        display: 'flex',
+        justifyContent: 'space-between',
+    }
+}
