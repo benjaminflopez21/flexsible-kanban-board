@@ -5,6 +5,7 @@ import Style from './board.style';
 import Column from '../../components/column/column.component';
 import Card from '../../components/card/card.component';
 import CardModel from '../../../models/card';
+import Modal from '../../components/modal/modal.component';
 
 const Board = (props) => {
     //const {} = props;
@@ -188,6 +189,8 @@ const Board = (props) => {
 
         </div>
 
+
+<Modal title="Title" show={true}></Modal>
 
     </main>);
 };
