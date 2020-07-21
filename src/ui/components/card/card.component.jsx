@@ -2,18 +2,30 @@
 import { jsx } from '@emotion/core'
 import PropTypes from 'prop-types';
 import Style from './card.style';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import DropDowunMenu from '../dropDownMenu/dropDowunMenu.component';
 
 const Card = (props) => {
     const {
         model,
+        onEdit,
+        onDelete,
     } = props;
+
+    const onEditWrapper = () => {
+        onEdit(model);
+    }
+
+    const onDeleteWrapper = () => {
+        onDelete(model);
+    }
+
     return (<div css={Style.card}>
         <div css={Style.content}>
             <span css={Style.menu}>
-                <DropDowunMenu></DropDowunMenu>
+                <DropDowunMenu
+                    onEdit={onEditWrapper}
+                    onDelete={onDeleteWrapper}
+                ></DropDowunMenu>
             </span>
             <h1 css={Style.title}>{model.title}</h1>
             <div css={Style.description}>
@@ -32,9 +44,9 @@ const Card = (props) => {
 };
 
 Card.propTypes = {
+    model: PropTypes.objectOf(PropTypes.any).isRequired,
     onEdit: PropTypes.func.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    model: PropTypes.objectOf(PropTypes.any).isRequired
+    onDelete: PropTypes.func.isRequired
 };
 
 export default Card;

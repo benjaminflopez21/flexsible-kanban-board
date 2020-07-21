@@ -1,12 +1,14 @@
 export default class Card {
+    id;
     title;
     description;
     tag;
     assignee;
     dueDate;
 
-    fromJson(json) {
+    static fromJson(json) {
         let card = new Card();
+        card.id = json['id'];
         card.title = json['title'];
         card.description = json['description'];
         card.tag = json['tag'];
