@@ -127,70 +127,33 @@ const Board = (props) => {
         ]
     }
 
-    return (<main css={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        background: '#2e465b',
-    }}>
+    return (<main css={Style.wrapper}>
+        <div css={Style.board}>
+            <div css={Style.innerBoard}>
+                <div css={Style.content}>
+                    <Column title="To Do">
+                        {colums.todo.map((card) => {
+                            return <Card
+                                model={card}
+                            >
+                            </Card>
+                        })}
+                    </Column>
 
-        <div css={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            marginRight: 0,
-            position: 'relative',
-            transition: 'margin .1s ease-in',
-        }}>
-            <div css={{
-                position: 'relative',
-                flexGrow: 1,
-            }}>
-                <div css={{
-                    userSelect: 'none',
-                    whiteSpace: 'nowrap',
-                    marginBottom: '8px',
-                    overflowX: 'auto',
-                    overflowY: 'hidden',
-                    paddingBottom: '8px',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                    textAlign: 'left',
-                }}>
-
-                    
-        <Column title="To Do">
-            {colums.todo.map((card) => {
-                return <Card
-                    model={card}
-                >
-                </Card>
-            })}
-        </Column>
-
-        <Column title="To Do">
-            {colums.todo.map((card) => {
-                return <Card
-                    model={card}
-                >
-                </Card>
-            })}
-        </Column>
-
-
+                    <Column title="To Do">
+                        {colums.todo.map((card) => {
+                            return <Card
+                                model={card}
+                            >
+                            </Card>
+                        })}
+                    </Column>
                 </div>
-
             </div>
-
         </div>
 
 
-<Modal title="Title" show={true}></Modal>
+<Modal title="Title" show={false}></Modal>
 
     </main>);
 };

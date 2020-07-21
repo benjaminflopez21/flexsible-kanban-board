@@ -21,7 +21,15 @@ export default {
         fontSize: 15,
         fontWeight: 500,
         marginBottom: 3,
+        paddingRight: 35,
     },
+    menu: {
+        position: 'absolute',
+        right: 19,
+        top: 6,
+        color: 'gray',
+    },
+    
     description: {
         fontSize: 14,
         lineHeight: '20px',

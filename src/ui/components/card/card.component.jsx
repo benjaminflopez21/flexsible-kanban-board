@@ -2,6 +2,9 @@
 import { jsx } from '@emotion/core'
 import PropTypes from 'prop-types';
 import Style from './card.style';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import DropDowunMenu from '../dropDownMenu/dropDowunMenu.component';
 
 const Card = (props) => {
     const {
@@ -9,6 +12,9 @@ const Card = (props) => {
     } = props;
     return (<div css={Style.card}>
         <div css={Style.content}>
+            <span css={Style.menu}>
+                <DropDowunMenu></DropDowunMenu>
+            </span>
             <h1 css={Style.title}>{model.title}</h1>
             <div css={Style.description}>
                 {model.description}
