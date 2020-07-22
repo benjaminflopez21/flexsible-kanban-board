@@ -13,7 +13,7 @@ const DeleteModal = (props) => {
     } = props;
 
     return <Modal title="Delete Card" 
-    show={Boolean(model)}
+    show={!!model}
     onClose={onClose}>
         <div>
             <p css={Style.message}>Do you really want to delete this card?</p>
@@ -26,7 +26,7 @@ const DeleteModal = (props) => {
 };
 
 DeleteModal.propTypes = {
-    model: PropTypes.objectOf(PropTypes.any).isRequired,
+    model: PropTypes.objectOf(PropTypes.any),
     onClose: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
 };

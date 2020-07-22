@@ -1,5 +1,118 @@
 import CardModel from '../models/card';
-
+let todo =  [
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+    CardModel.fromJson({
+        title: 'Card 1',
+        description: 'Description',
+        assignee: 'Juan Pablo',
+        tag: 'CEO',
+        dueDate: '2020-10-05'
+    }),
+];
 const storageKeys = {
     CARDS: 'cards',
 }
@@ -64,7 +177,6 @@ const editCard = (card, status) => {
     _saveCards();
     return _cards;
 }
-
 
 const _saveCards = () => {
     localStorage.setItem(storageKeys.CARDS, _cards);

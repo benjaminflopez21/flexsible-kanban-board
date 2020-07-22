@@ -6,131 +6,21 @@ import Column from '../../components/column/column.component';
 import Card from '../../components/card/card.component';
 import CardModel from '../../../models/card';
 import DeleteModal from '../../components/deleteModal/deleteModal.component';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { loadCards } from '../../../services/cardService';
 
 const Board = (props) => {
-    //const {} = props;
-
-    const colums = {
-        todo: [
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-            CardModel.fromJson({
-                title: 'Card 1',
-                description: 'Description',
-                assignee: 'Juan Pablo',
-                tag: 'CEO',
-                dueDate: '2020-10-05'
-            }),
-        ]
-    }
-
+    
+    const [cards, setCards] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [cardToEdit, setCardToEdit] = useState(null);
     const [cardToDelete, setCardToDelete] = useState(null);
 
+    /*useEffect(() => {
+        setTimeout(() => {
+            setCards(loadCards());
+        }, 500000)
+    },[]);*/
 
     const onEdit = (card) => {
         setCardToEdit(card);
@@ -146,7 +36,6 @@ const Board = (props) => {
     }
 
     const onDeleteModal = () => {
-
         onCloseModal();
     }
 
@@ -154,8 +43,10 @@ const Board = (props) => {
         <div css={Style.board}>
             <div css={Style.innerBoard}>
                 <div css={Style.content}>
-                    <Column title="To Do">
-                        {colums.todo.map((card) => {
+                    <Column title="To Do" 
+                        loading={!cards}
+                        placeHolderCount={3}>
+                        {cards && cards.todo.map((card) => {
                             return <Card
                                 model={card}
                                 onEdit={onEdit}
@@ -165,7 +56,31 @@ const Board = (props) => {
                         })}
                     </Column>
 
+                    <Column title="In Progress" 
+                        loading={!cards}
+                        placeHolderCount={2}>
+                        {cards && cards.inprogress.map((card) => {
+                            return <Card
+                                model={card}
+                                onEdit={onEdit}
+                                onDelete={onDelete}
+                            >
+                            </Card>
+                        })}
+                    </Column>
 
+                    <Column title="Done" 
+                        loading={!cards}
+                        placeHolderCount={4}>
+                        {cards && cards.done.map((card) => {
+                            return <Card
+                                model={card}
+                                onEdit={onEdit}
+                                onDelete={onDelete}
+                            >
+                            </Card>
+                        })}
+                    </Column>
                 </div>
             </div>
         </div>
