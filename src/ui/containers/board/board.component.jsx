@@ -6,6 +6,7 @@ import Column from '../../components/column/column.component';
 import Card from '../../components/card/card.component';
 import CardModel from '../../../models/card';
 import DeleteModal from '../../components/deleteModal/deleteModal.component';
+import FormModal from '../../components/formModal/formModal.component';
 import { useState, useEffect } from 'react';
 import { loadCards } from '../../../services/cardService';
 
@@ -14,13 +15,17 @@ const Board = (props) => {
     const [cards, setCards] = useState(null);
     const [loading, setLoading] = useState(false);
     const [cardToEdit, setCardToEdit] = useState(null);
+    const [showFormModal, setShowFormModal] = useState(false);
     const [cardToDelete, setCardToDelete] = useState(null);
+    
+    
 
-    /*useEffect(() => {
+    useEffect(() => {
         setTimeout(() => {
             setCards(loadCards());
-        }, 500000)
-    },[]);*/
+     
+        }, 5000);
+    },[]);
 
     const onEdit = (card) => {
         setCardToEdit(card);
@@ -38,6 +43,13 @@ const Board = (props) => {
     const onDeleteModal = () => {
         onCloseModal();
     }
+
+    const onCloseFormModal = () => {
+        setCardToEdit(null);
+        setCardToDelete(null);
+        setShowFormModal(false);
+    }
+
 
     return (<main css={Style.wrapper}>
         <div css={Style.board}>
@@ -91,6 +103,14 @@ const Board = (props) => {
         onDelete={onDeleteModal}> 
     </DeleteModal>
 
+    <FormModal model={cardToEdit}
+        show={showFormModal}
+        onClose={onCloseFormModal}
+        onSave={null}> 
+    </FormModal>
+    <button onClick={()=>{
+        setShowFormModal(true);
+    }}>show</button>
     </main>);
 };
 

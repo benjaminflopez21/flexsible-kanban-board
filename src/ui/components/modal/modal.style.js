@@ -16,7 +16,6 @@ export default {
         backgroundColor: '#f4f5f7',
         borderRadius: 2,
         margin: '48px 0 80px',
-        overflow: 'hidden',
         position: 'relative',
         minWidth: 280,
         maxWidth: '100%',

@@ -16,4 +16,15 @@ export default class Card {
         card.dueDate = json['dueDate'];
         return card;
     }
+
+    toJson() {
+        return {
+            id: this.id,
+            title: this.title,
+            description: this.description,
+            tag: this.tag,
+            assignee: this.assignee,
+            dueDate: this.dueDate
+        };
+    }
 }
