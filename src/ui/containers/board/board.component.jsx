@@ -95,8 +95,7 @@ const Board = (props) => {
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
-                            >
-                            </Card>
+                            />
                         })}
                     </Column>
 
@@ -109,8 +108,7 @@ const Board = (props) => {
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
-                            >
-                            </Card>
+                            />
                         })}
                     </Column>
 
@@ -123,8 +121,7 @@ const Board = (props) => {
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
-                            >
-                            </Card>
+                            />
                         })}
                     </Column>
                 </div>

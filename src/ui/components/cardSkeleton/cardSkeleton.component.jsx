@@ -4,7 +4,7 @@ import Style from './cardSkeleton.style';
 import Skeleton from 'react-loading-skeleton';
 
 const CardSkeleton = () => {
-    return (<div css={Style.card}>
+    return (<div data-testid="card-skeleton" css={Style.card}>
         <div css={Style.content}>
             <Skeleton css={Style.title}/>
             <Skeleton count={2} css={Style.description}/> 

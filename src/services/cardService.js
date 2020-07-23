@@ -82,9 +82,21 @@ const _uuidv4 = () => {
     });
 }
 
+const setTest = () => {
+    storageKeys.CARDS = 'cards-test';
+    localStorage.removeItem(storageKeys.CARDS);
+}
+
+const setProd = () => {
+    localStorage.removeItem(storageKeys.CARDS);
+    storageKeys.CARDS = 'cards';
+}
+
 export {
     addCard,
     loadCards,
     removeCard,
-    editCard
+    editCard,
+    setTest,
+    setProd,
 };

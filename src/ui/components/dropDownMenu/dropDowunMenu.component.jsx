@@ -46,7 +46,7 @@ const DropDowunMenu = (props) => {
  
     return (
     <div>
-        <span css={Style.button} onClick={showMenu}>
+        <span data-testid="open-menu-button" css={Style.button} onClick={showMenu}>
             <FontAwesomeIcon icon={faEllipsisH} />
         </span>
         

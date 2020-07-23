@@ -22,7 +22,8 @@ const Card = (props) => {
     return (<div css={Style.card}>
         <div css={Style.content}>
             <span css={Style.menu}>
-                <DropDowunMenu
+                <DropDowunMenu 
+                    data-testid="dropdown-menu"
                     onEdit={onEditWrapper}
                     onDelete={onDeleteWrapper}
                 ></DropDowunMenu>

@@ -18,7 +18,7 @@ const FormModal = (props) => {
         onSave,
     } = props;
 
-    return <Modal title="Create/Edit Card" 
+    return <Modal title={`${model ? 'Edit' : 'Create'} Card`}
     show={!!model || show}
     onClose={onClose}>
         <div>
