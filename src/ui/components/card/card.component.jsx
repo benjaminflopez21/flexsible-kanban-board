@@ -36,7 +36,7 @@ const Card = (props) => {
                 <span css={Style.assignee}>{model.assignee}</span>
             </div>
             <time css={Style.dueDate}>
-                {model.dueDate}
+                {model.dueDate && model.dueDate.split('T')[0]}
             </time>
         </div>
         

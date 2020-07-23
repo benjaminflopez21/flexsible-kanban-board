@@ -2,6 +2,7 @@ export default {
     buttons: {
         display: 'flex',
         justifyContent: 'center',
+        marginTop: 18,
     },
     content: {
         textAlign: 'left',
@@ -15,6 +16,7 @@ export default {
         marginRight: 20,
         minWidth: '90%',
         resize: 'none',
+        fontFamily: 'sans-serif',
     },
     cancelButton: {
         padding: 5,
@@ -37,6 +39,11 @@ export default {
         paddingRight: 20,
         marginLeft: 10,
         paddingLeft: 20,
+        boxShadow:'0px 2px 3px 0px #848484',
+        trasnsition: '0.3s',
+        '&:active': {
+            boxShadow:'0px 0px 0px 0px #848484',
+        }
     },
     row: {
         display: 'flex',
@@ -46,7 +53,9 @@ export default {
     },
 
     errorMessage: {
-        color: '#fd7250',
-        fontSize: 13,
+        color: '#ff4d22',
+        fontSize: 12,
+        paddingLeft: 6,
+        
     }
 }

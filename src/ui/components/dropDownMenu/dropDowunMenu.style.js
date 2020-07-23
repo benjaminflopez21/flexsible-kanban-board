@@ -1,6 +1,7 @@
 export default {
     button: {
         position: 'relative',
+        zIndex: 0,
     },
     menu: {
         position: 'absolute',
@@ -11,6 +12,7 @@ export default {
         boxShadow: '0 8px 16px -4px rgba(9,30,66,.25), 0 0 0 1px rgba(9,30,66,.08)',
         padding: 9,
         textAlign: 'center',
+        zIndex: 1,
     },
     editButton: {
         padding: 5,

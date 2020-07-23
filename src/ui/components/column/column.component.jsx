@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core'
 import PropTypes from 'prop-types';
 import Style from './column.style';
 import CardSkeleton from '../cardSkeleton/cardSkeleton.component';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 const Column = (props) => {
     const {
@@ -13,10 +13,19 @@ const Column = (props) => {
     } = props;
 
     const loadingComponents = useMemo(()=>{
-        return [...new Array(placeHolderCount)].map(() => {
-            return <CardSkeleton />;
+        return [...new Array(placeHolderCount)].map((value, index) => {
+            return <CardSkeleton key={index} />;
         });
     }, [placeHolderCount]);
+
+
+    const hasChildren = useMemo(() => {
+        if(!props.children) {
+            return false;
+        }
+        return React.Children.count(props.children) > 0;
+    }, [props.children])
+    
 
     return (<div css={Style.wrapper}>
         <div css={Style.content}>
@@ -28,6 +37,10 @@ const Column = (props) => {
                     !loading 
                     ? props.children 
                     : loadingComponents
+                }
+
+                {
+                   (!loading && !hasChildren) && <span css={Style.emptyCard}>No cards here</span>
                 }
             </main>
             <footer css={Style.footer}>

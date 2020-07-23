@@ -8,7 +8,7 @@ export default Yup.object().shape({
     description: Yup.string()
       .max(500, 'Too Long!')
       .required('Field Required'),
-    tag: Yup.string().required('Field Required').nullable(),
+    tag: Yup.string().required('Field Required'),
     assignee: Yup.string(),
-    dueDate: Yup.date(),
+    dueDate: Yup.date().nullable(),
   });

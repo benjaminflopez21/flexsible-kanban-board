@@ -1,14 +1,17 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core'
-import PropTypes from 'prop-types';
 import Style from './board.style';
 import Column from '../../components/column/column.component';
 import Card from '../../components/card/card.component';
-import CardModel from '../../../models/card';
 import DeleteModal from '../../components/deleteModal/deleteModal.component';
 import FormModal from '../../components/formModal/formModal.component';
 import { useState, useEffect } from 'react';
-import { loadCards } from '../../../services/cardService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { loadCards, editCard, addCard, removeCard } from '../../../services/cardService';
+import AppBar from '../../components/appBar/appBar.component';
+import logo from '../../../assets/flexsible-icon.png';
+
 
 const Board = (props) => {
     
@@ -17,14 +20,14 @@ const Board = (props) => {
     const [cardToEdit, setCardToEdit] = useState(null);
     const [showFormModal, setShowFormModal] = useState(false);
     const [cardToDelete, setCardToDelete] = useState(null);
-    
-    
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setCards(loadCards());
-     
         }, 5000);
+        return () => {
+            clearTimeout(timer);
+        }
     },[]);
 
     const onEdit = (card) => {
@@ -41,7 +44,9 @@ const Board = (props) => {
     }
 
     const onDeleteModal = () => {
+        setCards(removeCard(cardToDelete));
         onCloseModal();
+        toast.error('🚫 Card Removed!');
     }
 
     const onCloseFormModal = () => {
@@ -50,8 +55,34 @@ const Board = (props) => {
         setShowFormModal(false);
     }
 
+    const onSave = (card) => {
+        if(card.id) {
+            setCards(editCard(card));
+        } else {
+            setCards(addCard(card));
+        }
+        onCloseFormModal();
+        toast.success('👌 Card Saved!');
+
+        /*👌🚫🚧📃*/
+    } 
+
 
     return (<main css={Style.wrapper}>
+        <AppBar>
+
+        <img
+              css={Style.logo}
+              alt="Logo"
+              src={logo}
+            />
+
+            <div css={Style.newCardutton} onClick={()=>{
+                setShowFormModal(true);
+            }}>Add new Card</div>
+
+
+        </AppBar>
         <div css={Style.board}>
             <div css={Style.innerBoard}>
                 <div css={Style.content}>
@@ -60,6 +91,7 @@ const Board = (props) => {
                         placeHolderCount={3}>
                         {cards && cards.todo.map((card) => {
                             return <Card
+                                key={card.id}
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
@@ -73,6 +105,7 @@ const Board = (props) => {
                         placeHolderCount={2}>
                         {cards && cards.inprogress.map((card) => {
                             return <Card
+                                key={card.id}
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
@@ -86,6 +119,7 @@ const Board = (props) => {
                         placeHolderCount={4}>
                         {cards && cards.done.map((card) => {
                             return <Card
+                                key={card.id}
                                 model={card}
                                 onEdit={onEdit}
                                 onDelete={onDelete}
@@ -106,11 +140,21 @@ const Board = (props) => {
     <FormModal model={cardToEdit}
         show={showFormModal}
         onClose={onCloseFormModal}
-        onSave={null}> 
+        onSave={onSave}> 
     </FormModal>
-    <button onClick={()=>{
-        setShowFormModal(true);
-    }}>show</button>
+
+    <ToastContainer
+        css={Style.toast}
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+    />
     </main>);
 };
 

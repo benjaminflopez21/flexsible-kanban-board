@@ -1,121 +1,10 @@
 import CardModel from '../models/card';
-let todo =  [
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'How To Build and Deploy a Node.js Application To DigitalOcean Kubernetes Using Semaphore Continuous Integration and Delivery | DigitalOcean',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-    CardModel.fromJson({
-        title: 'Card 1',
-        description: 'Description',
-        assignee: 'Juan Pablo',
-        tag: 'CEO',
-        dueDate: '2020-10-05'
-    }),
-];
+
 const storageKeys = {
     CARDS: 'cards',
 }
+
+const status = ['todo', 'inprogress', 'done'];
 
 let _cards = {
     todo:[],
@@ -132,17 +21,16 @@ const loadCards = () => {
 }
 
 const _formatCards = (cardsStr) => {
-    const status = ['todo', 'inprogress', 'done'];
     const newCards = {
         todo:[],
         inprogress:[],
         done: [],
     };
     const parsedCards = JSON.parse(cardsStr);
-    for(const statu of status) {
-        if(parsedCards[statu]) {
-            for(const card of parsedCards[statu]) {
-                newCards[status].push(CardModel.fromJson(card));
+    for(const state of status) {
+        if(parsedCards[state]) {
+            for(const card of parsedCards[state]) {
+                newCards[state].push(CardModel.fromJson(card));
             }
         }
     }
@@ -151,27 +39,32 @@ const _formatCards = (cardsStr) => {
 }
 
 const addCard = (card) => {
+    card.id = _uuidv4();
     _cards.todo.push(card);
     _saveCards();
     return _cards;
 }
 
-const removeCard = (card, status) => {
-    for (var i = 0; i < _cards[status].length; i++) {
-        if (_cards[status][i].id === card.id) {
-            _cards[status].splice(i, 1);
-            break;
+const removeCard = (card) => {
+    forId: for(const state of status) {
+        for (var i = 0; i < _cards[state].length; i++) {
+            if (_cards[state][i].id === card.id) {
+                _cards[state].splice(i, 1);
+                break forId;
+            }
         }
     }
     _saveCards();
     return _cards;
 }
 
-const editCard = (card, status) => {
-    for (var i = 0; i < _cards[status].length; i++) {
-        if (_cards[status][i].id === card.id) {
-            _cards[status] = card;
-            break;
+const editCard = (card) => {
+    forId: for(const state of status) {
+        for (var i = 0; i < _cards[state].length; i++) {
+            if (_cards[state][i].id === card.id) {
+                _cards[state][i] = card;
+                break forId;
+            }
         }
     }
     _saveCards();
@@ -179,7 +72,14 @@ const editCard = (card, status) => {
 }
 
 const _saveCards = () => {
-    localStorage.setItem(storageKeys.CARDS, _cards);
+    localStorage.setItem(storageKeys.CARDS, JSON.stringify(_cards));
+}
+
+const _uuidv4 = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
 }
 
 export {

@@ -24,7 +24,7 @@ export default class Card {
             description: this.description,
             tag: this.tag,
             assignee: this.assignee,
-            dueDate: this.dueDate
+            dueDate: this.dueDate ? new Date(this.dueDate) : null,
         };
     }
 }

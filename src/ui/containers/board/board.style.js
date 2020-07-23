@@ -8,7 +8,7 @@ export default {
         background: '#2e465b',
     },
     board: {
-        height: '100%',
+        height: 'calc(100% - 75px)',
         display: 'flex',
         flexDirection: 'column',
         marginRight: 0,
@@ -32,6 +32,46 @@ export default {
         bottom: 0,
         left: 0,
         textAlign: 'left',
-    }
+    },
 
+    toast: {
+        textAlign: 'left',
+        '& .Toastify__toast--success': {
+            borderRadius: 5,
+            background: '#4caf50',
+        },
+        '& .Toastify__toast--error': {
+            borderRadius: 5,
+            background: '#f44336',
+        }
+
+    },
+
+    newCardutton: {
+        padding: 5,
+        color: '#fff',
+        background: '#fd7250',
+        margin: '5px 0px',
+        borderRadius: 5,
+        cursor: 'pointer',
+        marginRight: 10,
+        paddingRight: 20,
+        marginLeft: 10,
+        paddingLeft: 20,
+        boxShadow: '0px 2px 3px 0px #00000066',
+        trasnsition: '0.3s',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontWeight: 500,
+        height: '56%',
+        '&:active': {
+            boxShadow:'0px 0px 0px 0px #848484',
+        }
+        
+    },
+    logo: {
+        height: '65%',
+        margin: '0 28px 0 14px',
+    }
 }

@@ -7,6 +7,7 @@ import ValidateSchema from './formModal.validate';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
+import CardModel from '../../../models/card';
 
 
 const FormModal = (props) => {
@@ -17,7 +18,7 @@ const FormModal = (props) => {
         onSave,
     } = props;
 
-    return <Modal title="Delete Card" 
+    return <Modal title="Create/Edit Card" 
     show={!!model || show}
     onClose={onClose}>
         <div>
@@ -34,8 +35,12 @@ const FormModal = (props) => {
                         dueDate: null
                     }}
                     validationSchema={ValidateSchema}
-                      onSubmit={(values, { setSubmitting }) => {
-
+                    onSubmit={(values, { setSubmitting }) => {
+                        const filteredValues = {
+                            ...values,
+                            dueDate: values.dueDate ? values.dueDate.toISOString() : null
+                        }
+                        onSave(CardModel.fromJson(filteredValues));
                       }}
                     >
                     {({
@@ -56,7 +61,7 @@ const FormModal = (props) => {
                         <div css={Style.row}>
                             <div>
                                 <Field css={Style.field} as="select" name="tag" placeholder="Tag">
-                                    <option>Select a tag</option>
+                                    <option value="">Select a tag</option>
                                     <option value="SEO">SEO</option>
                                     <option value="Long Form">Long Form</option>
                                     <option value="Blog Post">Blog Post</option>
@@ -65,7 +70,6 @@ const FormModal = (props) => {
                             </div>
                             <div>
                                 <Field css={Style.field} type="text" name="assignee" placeholder="Assignee"/>
-                                <ErrorMessage css={Style.errorMessage} name="assignee" component="div" />
                             </div>
                         </div>
                         <DatePicker 
@@ -79,7 +83,7 @@ const FormModal = (props) => {
 
                         <div css={Style.buttons}>
                             <div css={Style.cancelButton} onClick={onClose}>Cancel</div>
-                            <div css={Style.saveButton} onClick={handleSubmit}>Save</div>
+                            <div css={Style.saveButton} type="submit" onClick={handleSubmit}>Save</div>
                         </div>
                       </Form>
                     )}

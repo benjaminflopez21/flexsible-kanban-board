@@ -9,12 +9,14 @@ export default {
         marginBottom: '8px',
         maxWidth: '300px',
         minHeight: '20px',
-        position: 'relative',
+        
         textDecoration: 'none',
         zIndex: 0,
+        position: 'static',
     },
     content: {
         padding: 8,
+        position: 'relative',
     },
     title: {
         margin: 0,

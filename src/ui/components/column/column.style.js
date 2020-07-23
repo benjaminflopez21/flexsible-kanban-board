@@ -40,6 +40,13 @@ export default {
         padding: '0 4px',
         zIndex: 1,
         minHeight: 0,
+        paddingBottom: 50,
+    },
+    emptyCard: {
+        textAlign: 'center',
+        marginTop: 30,
+        color: '#777777',
+        display: 'block',
     },
     footer: {
         minHeight: '38px',
