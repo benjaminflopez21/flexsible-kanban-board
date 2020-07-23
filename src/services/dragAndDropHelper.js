@@ -26,6 +26,17 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
+const moveToEnd = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source);
+    const destClone = Array.from(destination);
+    const [removed] = sourceClone.splice(droppableSource.index, 1);
+    destClone.push(removed);
+    const result = {};
+    result[droppableSource.droppableId] = sourceClone;
+    result[droppableDestination.droppableId] = destClone;
+    return result;
+};
+
 /*export const getHomeColumn = (entities, id) => {
     const columnId = entities.columnOrder.find((id: Id) => {
       const column: Column = entities.columns[id];
@@ -153,6 +164,7 @@ const mutliDragAwareReorder = (args) => {
 export {
     getItems,
     reorder,
-    move, 
+    move,
+    moveToEnd 
    // mutliDragAwareReorder,
 }

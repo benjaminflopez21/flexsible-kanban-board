@@ -51,5 +51,15 @@ export default {
     dueDate: {
         fontSize: 13,
         color: '#b7b7b7',
+    },
+
+    hidden: {
+        height: 0,
+        margin: 0,
+        padding: 0,
+        overflow: 'hidden',
+        position: 'absolute',
+        opacity: 0,
+        pointerEvents: 'none',
     }
 }

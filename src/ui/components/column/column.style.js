@@ -16,6 +16,7 @@ export default {
         maxHeight: '100%',
         position: 'relative',
         whiteSpace: 'normal',
+        minHeight: 190,
     },
     header: {
         flex: '0 0 auto',

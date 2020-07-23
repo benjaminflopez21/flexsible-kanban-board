@@ -8,21 +8,30 @@ import FormModal from '../../components/formModal/formModal.component';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { loadCards, editCard, addCard, removeCard } from '../../../services/cardService';
+import { loadCards, editCard, addCard, removeCard, saveCards } from '../../../services/cardService';
 import AppBar from '../../components/appBar/appBar.component';
+import Search from '../../components/search/search.component';
+import { canShow } from '../../../services/filterService';
 import logo from '../../../assets/flexsible-icon.png';
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { reorder, move, mutliDragAwareReorder } from '../../../services/dragAndDropHelper';
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { reorder, moveToEnd, mutliDragAwareReorder } from '../../../services/dragAndDropHelper';
 
-const Board = (props) => {
+
+const Board = () => {
     
     const [cards, setCards] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const [filter, setFilter] = useState('');
     const [cardToEdit, setCardToEdit] = useState(null);
     const [showFormModal, setShowFormModal] = useState(false);
     const [cardToDelete, setCardToDelete] = useState(null);
     const [selectedCards, setSelectedCards] = useState([]);
-    const [draggingCard, setDraggingCard] = useState(null);
+
+    useEffect(() => {
+        if(cards) {
+            saveCards(cards);
+        }
+        
+    },[cards]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -203,7 +212,10 @@ const Board = (props) => {
       const unselectAll = () => {
         setSelectedCards([]);
       };*/
-
+    
+    const onSetFilter = (filter) => {
+        setFilter(filter);
+    }
 
     const onDragEnd = (result) => {
         const { source, destination } = result;
@@ -215,19 +227,19 @@ const Board = (props) => {
         const dInd = destination.droppableId;
     
         if (sInd === dInd) {
-          const items = reorder(cards[sInd], source.index, destination.index);
-          setCards({
-              ...cards,
-              [sInd]: items
-          });
+            const items = reorder(cards[sInd], source.index, destination.index);
+            setCards({
+                ...cards,
+                [sInd]: items
+            });
         } else {
-          const result = move(cards[sInd], cards[dInd], source, destination);
+            const result = moveToEnd(cards[sInd], cards[dInd], source, destination);
     
-          setCards({
-            ...cards,
-            [sInd]: result[sInd],
-            [dInd]: result[dInd]
-        });
+            setCards({
+                ...cards,
+                [sInd]: result[sInd],
+                [dInd]: result[dInd]
+            });
         }
     }
 
@@ -235,11 +247,12 @@ const Board = (props) => {
     return (<main css={Style.wrapper}>
         <AppBar>
 
-        <img
-              css={Style.logo}
-              alt="Logo"
-              src={logo}
-            />
+            <img
+                css={Style.logo}
+                alt="Logo"
+                src={logo}/>
+
+            <Search onFilter={onSetFilter}/>
 
             <div css={Style.newCardutton} onClick={()=>{
                 setShowFormModal(true);
@@ -255,7 +268,7 @@ const Board = (props) => {
                         {(provided, snapshot) => (
                             <Column 
                                 ref={provided.innerRef}
-                                //style={getListStyle(snapshot.isDraggingOver)}
+                                isDraggingOver={snapshot.isDraggingOver}
                                 {...provided.droppableProps}
                                 title="To Do" 
                                 loading={!cards}
@@ -264,6 +277,7 @@ const Board = (props) => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}
                                         onDelete={onDelete}
@@ -277,7 +291,7 @@ const Board = (props) => {
                         {(provided, snapshot) => (
                             <Column 
                                 ref={provided.innerRef}
-                                //style={getListStyle(snapshot.isDraggingOver)}
+                                isDraggingOver={snapshot.isDraggingOver}
                                 {...provided.droppableProps}
                                 title="In Progress" 
                                 loading={!cards}
@@ -286,6 +300,7 @@ const Board = (props) => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}
                                         onDelete={onDelete}
@@ -299,7 +314,7 @@ const Board = (props) => {
                         {(provided, snapshot) => (
                             <Column 
                                 ref={provided.innerRef}
-                                //style={getListStyle(snapshot.isDraggingOver)}
+                                isDraggingOver={snapshot.isDraggingOver}
                                 {...provided.droppableProps}
                                 title="Done" 
                                 loading={!cards}
@@ -308,6 +323,7 @@ const Board = (props) => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}
                                         onDelete={onDelete}

@@ -3,7 +3,6 @@ import { jsx } from '@emotion/core'
 import PropTypes from 'prop-types';
 import Style from './card.style';
 import DropDowunMenu from '../dropDownMenu/dropDowunMenu.component';
-import React from 'react';
 import { Draggable } from "react-beautiful-dnd";
 
 const Card = (props) => {
@@ -11,7 +10,8 @@ const Card = (props) => {
         model,
         onEdit,
         onDelete,
-        index
+        index,
+        canShow,
     } = props;
 
     const onEditWrapper = () => {
@@ -95,7 +95,7 @@ const Card = (props) => {
             <div ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                css={Style.card}
+                css={canShow ? Style.card : Style.hidden}
                // onClick={onClick}
                 /*onKeyDown={(event) =>
                   onKeyDown(event, snapshot)
@@ -129,7 +129,8 @@ Card.propTypes = {
     model: PropTypes.objectOf(PropTypes.any).isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    canShow: PropTypes.bool.isRequired
 };
 
 export default Card;

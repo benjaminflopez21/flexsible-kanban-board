@@ -10,6 +10,7 @@ const Column = React.forwardRef((props, ref) => {
         title,
         loading,
         placeHolderCount,
+        isDraggingOver,
         ...rest
     } = props;
 
@@ -41,7 +42,7 @@ const Column = React.forwardRef((props, ref) => {
                 }
 
                 {
-                   (!loading && !hasChildren) && <span css={Style.emptyCard}>No cards here</span>
+                   (!loading && !hasChildren && !isDraggingOver) && <span css={Style.emptyCard}>No cards here</span>
                 }
             </main>
             <footer css={Style.footer}>
@@ -53,6 +54,7 @@ const Column = React.forwardRef((props, ref) => {
 Column.propTypes = {
     title: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
+    isDraggingOver: PropTypes.bool.isRequired,
     placeHolderCount: PropTypes.number.isRequired,
 };
 

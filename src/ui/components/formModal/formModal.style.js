@@ -17,6 +17,7 @@ export default {
         minWidth: '90%',
         resize: 'none',
         fontFamily: 'sans-serif',
+        outline: 'none',
     },
     cancelButton: {
         padding: 5,
