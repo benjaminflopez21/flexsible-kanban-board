@@ -11,7 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { loadCards, editCard, addCard, removeCard } from '../../../services/cardService';
 import AppBar from '../../components/appBar/appBar.component';
 import logo from '../../../assets/flexsible-icon.png';
-
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { reorder, move, mutliDragAwareReorder } from '../../../services/dragAndDropHelper';
 
 const Board = (props) => {
     
@@ -20,6 +21,8 @@ const Board = (props) => {
     const [cardToEdit, setCardToEdit] = useState(null);
     const [showFormModal, setShowFormModal] = useState(false);
     const [cardToDelete, setCardToDelete] = useState(null);
+    const [selectedCards, setSelectedCards] = useState([]);
+    const [draggingCard, setDraggingCard] = useState(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -68,6 +71,167 @@ const Board = (props) => {
     } 
 
 
+   /* onDragStart = (start) => {
+        const id = start.draggableId;
+        const selected = state.selectedCards.find(
+          (cardId) => cardId === id,
+        );
+    
+        if (!selected) {
+          unselectAll();
+        }
+        setState({
+          draggingCard: start.draggableId,
+        });
+      };
+    
+      onDragEnd = (result) => {
+        const destination = result.destination;
+        const source = result.source;
+    
+        if (!destination || result.reason === 'CANCEL') {
+            setDraggingCard(null);
+             return;
+        }
+    
+        const processed = mutliDragAwareReorder({
+          entities: cards,
+          selectedCards: selectedCards,
+          source,
+          destination,
+        });
+    
+        this.setState({
+          ...processed,
+          draggingCard: null,
+        });
+        setDraggingCard(null);
+      };
+    
+      onWindowKeyDown = (event: KeyboardEvent) => {
+        if (event.defaultPrevented) {
+          return;
+        }
+    
+        if (event.key === 'Escape') {
+          this.unselectAll();
+        }
+      };
+    
+      onWindowClick = (event: KeyboardEvent) => {
+        if (event.defaultPrevented) {
+          return;
+        }
+        this.unselectAll();
+      };
+    
+      onWindowTouchEnd = (event: TouchEvent) => {
+        if (event.defaultPrevented) {
+          return;
+        }
+        this.unselectAll();
+      };
+    
+      cosnt toggleSelection = (cardId) => {
+        const selectedCards: Id[] = this.state.selectedCards;
+        const wasSelected: boolean = selectedCards.includes(taskId);
+    
+        const newTaskIds: Id[] = (() => {
+          // Task was not previously selected
+          // now will be the only selected item
+          if (!wasSelected) {
+            return [taskId];
+          }
+    
+          // Task was part of a selected group
+          // will now become the only selected item
+          if (selectedCards.length > 1) {
+            return [taskId];
+          }
+    
+          // task was previously selected but not in a group
+          // we will now clear the selection
+          return [];
+        })();
+    
+        this.setState({
+          selectedCards: newTaskIds,
+        });
+      };
+    
+      const toggleSelectionInGroup = (cardId) => {
+        const selectedCards: Id[] = this.state.selectedCards;
+        const index: number = selectedCards.indexOf(cardId);
+    
+        // if not selected - add it to the selected items
+        if (index === -1) {
+          this.setState({
+            selectedCards: [...selectedCards, cardId],
+          });
+          return;
+        }
+    
+        // it was previously selected and now needs to be removed from the group
+        const shallow: Id[] = [...selectedCards];
+        shallow.splice(index, 1);
+        this.setState({
+          selectedCards: shallow,
+        });
+      };
+    
+      // This behaviour matches the MacOSX finder selection
+      const multiSelectTo = (cardId) => {
+        const updated: ?(Id[]) = multiSelect(
+          this.state.entities,
+          this.state.selectedCards,
+          cardId,
+        );
+    
+        if (updated == null) {
+          return;
+        }
+    
+        this.setState({
+          selectedCards: updated,
+        });
+      };
+    
+      const unselect = () => {
+        unselectAll();
+      };
+    
+      const unselectAll = () => {
+        setSelectedCards([]);
+      };*/
+
+
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
+    
+        if (!destination) {
+          return;
+        }
+        const sInd = source.droppableId;
+        const dInd = destination.droppableId;
+    
+        if (sInd === dInd) {
+          const items = reorder(cards[sInd], source.index, destination.index);
+          setCards({
+              ...cards,
+              [sInd]: items
+          });
+        } else {
+          const result = move(cards[sInd], cards[dInd], source, destination);
+    
+          setCards({
+            ...cards,
+            [sInd]: result[sInd],
+            [dInd]: result[dInd]
+        });
+        }
+    }
+
+
     return (<main css={Style.wrapper}>
         <AppBar>
 
@@ -85,46 +249,78 @@ const Board = (props) => {
         </AppBar>
         <div css={Style.board}>
             <div css={Style.innerBoard}>
+            <DragDropContext onDragEnd={onDragEnd}>
                 <div css={Style.content}>
-                    <Column title="To Do" 
-                        loading={!cards}
-                        placeHolderCount={3}>
-                        {cards && cards.todo.map((card) => {
-                            return <Card
-                                key={card.id}
-                                model={card}
-                                onEdit={onEdit}
-                                onDelete={onDelete}
-                            />
-                        })}
-                    </Column>
+                    <Droppable droppableId={`todo`}>
+                        {(provided, snapshot) => (
+                            <Column 
+                                ref={provided.innerRef}
+                                //style={getListStyle(snapshot.isDraggingOver)}
+                                {...provided.droppableProps}
+                                title="To Do" 
+                                loading={!cards}
+                                placeHolderCount={3}>
+                                {cards && cards.todo.map((card, index) => {
+                                    return  <Card
+                                        key={card.id}
+                                        index={index}
+                                        model={card}
+                                        onEdit={onEdit}
+                                        onDelete={onDelete}
+                                    />;
+                                })}
+                            </Column>
+                        )}
+                    </Droppable>
 
-                    <Column title="In Progress" 
-                        loading={!cards}
-                        placeHolderCount={2}>
-                        {cards && cards.inprogress.map((card) => {
-                            return <Card
-                                key={card.id}
-                                model={card}
-                                onEdit={onEdit}
-                                onDelete={onDelete}
-                            />
-                        })}
-                    </Column>
+                    <Droppable droppableId={`inprogress`}>
+                        {(provided, snapshot) => (
+                            <Column 
+                                ref={provided.innerRef}
+                                //style={getListStyle(snapshot.isDraggingOver)}
+                                {...provided.droppableProps}
+                                title="In Progress" 
+                                loading={!cards}
+                                placeHolderCount={2}>
+                                {cards && cards.inprogress.map((card, index) => {
+                                    return  <Card
+                                        key={card.id}
+                                        index={index}
+                                        model={card}
+                                        onEdit={onEdit}
+                                        onDelete={onDelete}
+                                    />;
+                                })}
+                            </Column>
+                        )}
+                    </Droppable>
 
-                    <Column title="Done" 
-                        loading={!cards}
-                        placeHolderCount={4}>
-                        {cards && cards.done.map((card) => {
-                            return <Card
-                                key={card.id}
-                                model={card}
-                                onEdit={onEdit}
-                                onDelete={onDelete}
-                            />
-                        })}
-                    </Column>
+                    <Droppable droppableId={`done`}>
+                        {(provided, snapshot) => (
+                            <Column 
+                                ref={provided.innerRef}
+                                //style={getListStyle(snapshot.isDraggingOver)}
+                                {...provided.droppableProps}
+                                title="Done" 
+                                loading={!cards}
+                                placeHolderCount={4}>
+                                {cards && cards.done.map((card, index) => {
+                                    return  <Card
+                                        key={card.id}
+                                        index={index}
+                                        model={card}
+                                        onEdit={onEdit}
+                                        onDelete={onDelete}
+                                    />;
+                                })}
+                            </Column>
+                        )}
+                    </Droppable>
+
+
+
                 </div>
+            </DragDropContext>
             </div>
         </div>
 

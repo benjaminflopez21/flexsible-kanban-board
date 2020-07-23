@@ -5,11 +5,12 @@ import Style from './column.style';
 import CardSkeleton from '../cardSkeleton/cardSkeleton.component';
 import React, { useMemo } from 'react';
 
-const Column = (props) => {
+const Column = React.forwardRef((props, ref) => {
     const {
         title,
         loading,
-        placeHolderCount
+        placeHolderCount,
+        ...rest
     } = props;
 
     const loadingComponents = useMemo(()=>{
@@ -27,7 +28,7 @@ const Column = (props) => {
     }, [props.children])
     
 
-    return (<div css={Style.wrapper}>
+    return (<div ref={ref} css={Style.wrapper} {...rest} >
         <div css={Style.content}>
              <header css={Style.header}>
                 <h2 css={Style.headerText}>{title}</h2>
@@ -47,7 +48,7 @@ const Column = (props) => {
             </footer>
         </div>
     </div>);
-};
+});
 
 Column.propTypes = {
     title: PropTypes.string.isRequired,
