@@ -14,7 +14,9 @@ import Search from '../../components/search/search.component';
 import { canShow } from '../../../services/filterService';
 import logo from '../../../assets/flexsible-icon.png';
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { reorder, moveToEnd, mutliDragAwareReorder } from '../../../services/dragAndDropHelper';
+import { reorder, moveToEnd, moveAllToEnd } from '../../../services/dragAndDropHelper';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 
 const Board = () => {
@@ -25,6 +27,7 @@ const Board = () => {
     const [showFormModal, setShowFormModal] = useState(false);
     const [cardToDelete, setCardToDelete] = useState(null);
     const [selectedCards, setSelectedCards] = useState([]);
+    const [lastListId, setLastListId] = useState('');
 
     useEffect(() => {
         if(cards) {
@@ -33,20 +36,35 @@ const Board = () => {
         
     },[cards]);
 
+    
+   const onWindowClick =  (event) => {
+        if (event.defaultPrevented) {
+            return;
+        }
+        setSelectedCards([]);
+    }
+
     useEffect(() => {
+        window.addEventListener('click', onWindowClick);
+        window.addEventListener('touchend', onWindowClick);
         const timer = setTimeout(() => {
             setCards(loadCards());
         }, 5000);
         return () => {
+            window.removeEventListener('click', onWindowClick);
+            window.removeEventListener('touchend', onWindowClick);
             clearTimeout(timer);
         }
     },[]);
 
+
     const onEdit = (card) => {
+        setSelectedCards([]);
         setCardToEdit(card);
     }
 
     const onDelete = (card) => {
+        setSelectedCards([]);
         setCardToDelete(card);
     }
 
@@ -75,145 +93,46 @@ const Board = () => {
         }
         onCloseFormModal();
         toast.success('👌 Card Saved!');
-
-        /*👌🚫🚧📃*/
     } 
 
+    const toggleSelection = (cardId, listId) => {
+        const wasSelected = selectedCards.includes(cardId);
+        setLastListId(listId);
+        const newSelectedCards = (() => {
 
-   /* onDragStart = (start) => {
-        const id = start.draggableId;
-        const selected = state.selectedCards.find(
-          (cardId) => cardId === id,
-        );
-    
-        if (!selected) {
-          unselectAll();
-        }
-        setState({
-          draggingCard: start.draggableId,
-        });
-      };
-    
-      onDragEnd = (result) => {
-        const destination = result.destination;
-        const source = result.source;
-    
-        if (!destination || result.reason === 'CANCEL') {
-            setDraggingCard(null);
-             return;
-        }
-    
-        const processed = mutliDragAwareReorder({
-          entities: cards,
-          selectedCards: selectedCards,
-          source,
-          destination,
-        });
-    
-        this.setState({
-          ...processed,
-          draggingCard: null,
-        });
-        setDraggingCard(null);
-      };
-    
-      onWindowKeyDown = (event: KeyboardEvent) => {
-        if (event.defaultPrevented) {
-          return;
-        }
-    
-        if (event.key === 'Escape') {
-          this.unselectAll();
-        }
-      };
-    
-      onWindowClick = (event: KeyboardEvent) => {
-        if (event.defaultPrevented) {
-          return;
-        }
-        this.unselectAll();
-      };
-    
-      onWindowTouchEnd = (event: TouchEvent) => {
-        if (event.defaultPrevented) {
-          return;
-        }
-        this.unselectAll();
-      };
-    
-      cosnt toggleSelection = (cardId) => {
-        const selectedCards: Id[] = this.state.selectedCards;
-        const wasSelected: boolean = selectedCards.includes(taskId);
-    
-        const newTaskIds: Id[] = (() => {
-          // Task was not previously selected
-          // now will be the only selected item
           if (!wasSelected) {
-            return [taskId];
+            return [cardId];
           }
     
-          // Task was part of a selected group
-          // will now become the only selected item
           if (selectedCards.length > 1) {
-            return [taskId];
+            return [cardId];
           }
-    
-          // task was previously selected but not in a group
-          // we will now clear the selection
+
           return [];
         })();
-    
-        this.setState({
-          selectedCards: newTaskIds,
-        });
-      };
-    
-      const toggleSelectionInGroup = (cardId) => {
-        const selectedCards: Id[] = this.state.selectedCards;
-        const index: number = selectedCards.indexOf(cardId);
-    
-        // if not selected - add it to the selected items
+        setSelectedCards(newSelectedCards);
+    };
+
+    const toggleSelectionInGroup = (cardId, listId) => {
+        let inSelectedCards = selectedCards;
+        if(listId !== lastListId) {
+            setLastListId(listId);
+            inSelectedCards = [];
+        }
+
+        const index = inSelectedCards.indexOf(cardId);
         if (index === -1) {
-          this.setState({
-            selectedCards: [...selectedCards, cardId],
-          });
-          return;
+            setSelectedCards([...inSelectedCards, cardId]);
+            return;
         }
-    
-        // it was previously selected and now needs to be removed from the group
-        const shallow: Id[] = [...selectedCards];
+        const shallow = [...inSelectedCards];
         shallow.splice(index, 1);
-        this.setState({
-          selectedCards: shallow,
-        });
-      };
-    
-      // This behaviour matches the MacOSX finder selection
-      const multiSelectTo = (cardId) => {
-        const updated: ?(Id[]) = multiSelect(
-          this.state.entities,
-          this.state.selectedCards,
-          cardId,
-        );
-    
-        if (updated == null) {
-          return;
-        }
-    
-        this.setState({
-          selectedCards: updated,
-        });
-      };
-    
-      const unselect = () => {
-        unselectAll();
-      };
-    
-      const unselectAll = () => {
-        setSelectedCards([]);
-      };*/
-    
+        setSelectedCards(shallow);
+
+    };
+
     const onSetFilter = (filter) => {
+        setSelectedCards([]);
         setFilter(filter);
     }
 
@@ -233,14 +152,20 @@ const Board = () => {
                 [sInd]: items
             });
         } else {
-            const result = moveToEnd(cards[sInd], cards[dInd], source, destination);
-    
+            let result;
+            if(selectedCards.length > 1) {
+                result = moveAllToEnd(cards[sInd], cards[dInd], source, destination, selectedCards);
+            } else {
+                result = moveToEnd(cards[sInd], cards[dInd], source, destination);
+            }
+            
             setCards({
                 ...cards,
                 [sInd]: result[sInd],
                 [dInd]: result[dInd]
             });
         }
+        setSelectedCards([]);
     }
 
 
@@ -255,8 +180,14 @@ const Board = () => {
             <Search onFilter={onSetFilter}/>
 
             <div css={Style.newCardutton} onClick={()=>{
+                setSelectedCards([]);
                 setShowFormModal(true);
-            }}>Add new Card</div>
+            }}>Add Card</div>
+
+            <div css={Style.newCarduttonMin} onClick={()=>{
+                setSelectedCards([]);
+                setShowFormModal(true);
+            }}><FontAwesomeIcon icon={faPlus} /></div>
 
 
         </AppBar>
@@ -277,6 +208,10 @@ const Board = () => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        listId={'todo'}
+                                        toggleSelection={toggleSelection}
+                                        toggleSelectionInGroup={toggleSelectionInGroup}
+                                        isSelected={selectedCards.includes(card.id)}
                                         canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}
@@ -300,6 +235,10 @@ const Board = () => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        listId={'inprogress'}
+                                        toggleSelection={toggleSelection}
+                                        toggleSelectionInGroup={toggleSelectionInGroup}
+                                        isSelected={selectedCards.includes(card.id)}
                                         canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}
@@ -323,6 +262,10 @@ const Board = () => {
                                     return  <Card
                                         key={card.id}
                                         index={index}
+                                        listId={'done'}
+                                        toggleSelection={toggleSelection}
+                                        toggleSelectionInGroup={toggleSelectionInGroup}
+                                        isSelected={selectedCards.includes(card.id)}
                                         canShow={canShow(card, filter)}
                                         model={card}
                                         onEdit={onEdit}

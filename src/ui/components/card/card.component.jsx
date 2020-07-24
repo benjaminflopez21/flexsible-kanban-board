@@ -11,7 +11,11 @@ const Card = (props) => {
         onEdit,
         onDelete,
         index,
+        listId,
         canShow,
+        toggleSelection,
+        toggleSelectionInGroup,
+        isSelected,
     } = props;
 
     const onEditWrapper = () => {
@@ -22,8 +26,7 @@ const Card = (props) => {
         onDelete(model);
     }
 
-   /* const onKeyDown = (event, snapshot) => {
-        // already used
+   const onKeyDown = (event, snapshot) => {
         if (event.defaultPrevented) {
           return;
         }
@@ -36,57 +39,39 @@ const Card = (props) => {
           return;
         }
     
-        // we are using the event for selection
         event.preventDefault();
     
         performAction(event);
-      };
+    };
     
-      // Using onClick as it will be correctly
-      // preventing if there was a drag
-      const onClick = (event) => {
+    const onClick = (event) => {
         if (event.defaultPrevented) {
-          return;
+            return;
         }
-    
+
         if (event.button !== 0) {
-          return;
+            return;
         }
-    
-        // marking the event as used
         event.preventDefault();
-    
+
         performAction(event);
-      };
+    };
     
-      // Determines if the platform specific toggle selection in group key was used
+      
       const wasToggleInSelectionGroupKeyUsed = (event) => {
         const isUsingWindows = navigator.platform.indexOf('Win') >= 0;
         return isUsingWindows ? event.ctrlKey : event.metaKey;
       };
-
-      const wasMultiSelectKeyUsed = (event) => event.shiftKey;
     
       const performAction = (event) => {
-        const {
-          model,
-          toggleSelection,
-          toggleSelectionInGroup,
-          multiSelectTo,
-        } = props;
     
         if (wasToggleInSelectionGroupKeyUsed(event)) {
-          toggleSelectionInGroup(model.id);
+          toggleSelectionInGroup(model.id, listId);
           return;
         }
-    
-        if (wasMultiSelectKeyUsed(event)) {
-          multiSelectTo(model.id);
-          return;
-        }
-    
-        toggleSelection(model.id);
-      };*/
+
+        toggleSelection(model.id, listId);
+      };
 
     return <Draggable
         draggableId={model.id}
@@ -95,11 +80,13 @@ const Card = (props) => {
             <div ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                css={canShow ? Style.card : Style.hidden}
-               // onClick={onClick}
-                /*onKeyDown={(event) =>
+                css={canShow 
+                    ? isSelected ? Style.selectedCard : Style.card 
+                    : Style.hidden}
+                onClick={onClick}
+                onKeyDown={(event) =>
                   onKeyDown(event, snapshot)
-                }*/>
+                }>
                 <div css={Style.content}>
                     <span css={Style.menu}>
                         <DropDowunMenu 
@@ -130,7 +117,11 @@ Card.propTypes = {
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
-    canShow: PropTypes.bool.isRequired
+    listId: PropTypes.string.isRequired,
+    canShow: PropTypes.bool.isRequired,
+    toggleSelection: PropTypes.func.isRequired,
+    toggleSelectionInGroup: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired,
 };
 
 export default Card;

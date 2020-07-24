@@ -67,11 +67,46 @@ export default {
         height: '56%',
         '&:active': {
             boxShadow:'0px 0px 0px 0px #848484',
+        },
+        '@media (max-width: 420px)': {
+            display: 'none',
+        }
+        
+    },
+    newCarduttonMin: {
+        padding: 5,
+        color: '#fff',
+        background: '#fd7250',
+        margin: '5px 0px',
+        borderRadius: 5,
+        cursor: 'pointer',
+        marginRight: 10,
+        paddingRight: 20,
+        marginLeft: 10,
+        paddingLeft: 20,
+        boxShadow: '0px 2px 3px 0px #00000066',
+        trasnsition: '0.3s',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontWeight: 500,
+        height: '56%',
+        '&:active': {
+            boxShadow:'0px 0px 0px 0px #848484',
+        },
+        '@media (min-width: 420px)': {
+            display: 'none',
         }
         
     },
     logo: {
         height: '65%',
         margin: '0 28px 0 14px',
+        '@media (max-width: 650px)': {
+            objectFit: 'cover',
+            objectPosition: '-49px',
+            width: '39px',
+            margin: '0 5px',
+        },
     }
 }

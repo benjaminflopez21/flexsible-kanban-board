@@ -22,7 +22,7 @@ describe('Board test', () => {
     test('Open/Close create card form', () => {
         const { getByText } = render(<Board />);
       
-        const newCardButtonElement = getByText(/Add new Card/i);
+        const newCardButtonElement = getByText(/Add Card/i);
         expect(newCardButtonElement).toBeInTheDocument();
 
         fireEvent.click(newCardButtonElement)

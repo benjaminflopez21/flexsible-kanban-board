@@ -14,6 +14,9 @@ export default {
         borderRadius: 5,
         overflow: 'hidden',
         boxShadow: '0px 2px 3px 0px #00000066',
+        '@media (max-width: 470px)': {
+            margin: 0,
+        }
     },
     input: {
         padding: '10px 9px',
