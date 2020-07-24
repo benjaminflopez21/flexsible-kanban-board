@@ -30,12 +30,6 @@ describe('Board test', () => {
         const modalHeaderElement = getByText(/Create/i);
         expect(modalHeaderElement).toBeInTheDocument();
       
-        const cancelButtonElement = getByText(/Cancel/i);
-        expect(cancelButtonElement).toBeInTheDocument();
-
-        fireEvent.click(cancelButtonElement);
-
-        expect(modalHeaderElement).not.toBeInTheDocument();
       });
       
 

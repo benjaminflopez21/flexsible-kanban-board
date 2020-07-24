@@ -7,32 +7,35 @@ describe('Filter service test', () => {
         let card = CardModel.fromJson({
             title: 'Card 1',
             description: 'test',
-            tag: 'CEO'
+            tag: 'CEO',
+            assignee: 'Benja'
         });
         expect(canShow(card, 'CEO')).toEqual(true);
         expect(canShow(card, 'Card 1')).toEqual(true);
-        expect(canShow(card, 'test')).toEqual(true);
+        expect(canShow(card, 'Benja')).toEqual(true);
     });
 
     test('Can Show startWith', () => {
         let card = CardModel.fromJson({
             title: 'Card 1',
             description: 'test',
-            tag: 'CEO'
+            tag: 'CEO',
+            assignee: 'Benja'
         });
         expect(canShow(card, 'CE')).toEqual(true);
         expect(canShow(card, 'Car')).toEqual(true);
-        expect(canShow(card, 't')).toEqual(true);
+        expect(canShow(card, 'Ben')).toEqual(true);
     });
 
     test('Can Show no Case sensitive', () => {
         let card = CardModel.fromJson({
             title: 'Card 1',
             description: 'test',
-            tag: 'CEO'
+            tag: 'CEO',
+            assignee: 'Benja'
         });
         expect(canShow(card, 'card 1')).toEqual(true);
-        expect(canShow(card, 'TEST')).toEqual(true);
+        expect(canShow(card, 'benja')).toEqual(true);
         expect(canShow(card, 'ceo')).toEqual(true);
     });
 
@@ -40,7 +43,8 @@ describe('Filter service test', () => {
         let card = CardModel.fromJson({
             title: 'Card 1',
             description: 'test',
-            tag: 'CEO'
+            tag: 'CEO',
+            assignee: 'Benja'
         });
         expect(canShow(card, 'Card 2')).toEqual(false);
         expect(canShow(card, 'text')).toEqual(false);
@@ -51,7 +55,8 @@ describe('Filter service test', () => {
         let card = CardModel.fromJson({
             title: 'Card 1',
             description: 'test',
-            tag: 'CEO'
+            tag: 'CEO',
+            assignee: 'Benja'
         });
         expect(canShow(card, '')).toEqual(true);
     });

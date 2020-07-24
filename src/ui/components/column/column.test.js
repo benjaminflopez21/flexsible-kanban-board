@@ -9,6 +9,7 @@ describe('Column test', () => {
             title="Column 1"
             loading={false}
             placeHolderCount={1}
+            isDraggingOver={false}
         />);
       
         const columnElement = getByText(/Column 1/i);
@@ -24,6 +25,7 @@ describe('Column test', () => {
             title="Column 1"
             loading={true}
             placeHolderCount={1}
+            isDraggingOver={false}
         />);
       
         const skeletonElement = getByTestId('card-skeleton');

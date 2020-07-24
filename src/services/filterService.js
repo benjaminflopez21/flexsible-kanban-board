@@ -6,7 +6,7 @@ const canShow = (card, filter) => {
 
     if(card.title.toLowerCase().startsWith(lowerFilter) || 
     card.tag.toLowerCase().startsWith(lowerFilter) || 
-    card.assignee.toLowerCase().startsWith(lowerFilter)) {
+    (card.assignee && card.assignee.toLowerCase().startsWith(lowerFilter))) {
         return true;
     }
 
